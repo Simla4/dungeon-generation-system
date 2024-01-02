@@ -38,7 +38,7 @@ public class RoomNodeGraphEditor : EditorWindow
     {
         roomNodeStyle = new GUIStyle();
 
-        roomNodeStyle.normal.background = EditorGUIUtility.Load("node1") as Texture2D;
+        roomNodeStyle.normal.background = EditorGUIUtility.Load("node2") as Texture2D;
         roomNodeStyle.normal.textColor = Color.white;
         roomNodeStyle.border = new RectOffset(nodeBorder, nodeBorder, nodeBorder, nodeBorder);
         roomNodeStyle.padding = new RectOffset(nodePadding, nodePadding, nodePadding, nodePadding);
