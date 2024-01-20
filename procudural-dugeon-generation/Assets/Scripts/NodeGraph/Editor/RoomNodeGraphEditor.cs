@@ -1,14 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using UnityEngine.UIElements;
+using UnityEditor.Callbacks;
 
 public class RoomNodeGraphEditor : EditorWindow
 {
     #region Vairables
 
     private GUIStyle roomNodeStyle;
+
+    private static RoomNodeGraphSO currentRoomNodeGraph;
 
     private const float nodeWidht = 160f;
     private const float nodeHeight = 75;
@@ -53,6 +53,25 @@ public class RoomNodeGraphEditor : EditorWindow
         GUILayout.BeginArea(new Rect(new Vector2(200, 300), new Vector2(nodeWidht, nodeHeight)), roomNodeStyle);
         EditorGUILayout.LabelField("node 2");
         GUILayout.EndArea();
+    }
+    
+    /// <summary>
+    /// Open the room node graph editor window if a room node graph scriptable object asset is double clicked in the inspectoe
+    /// </summary>
+    [OnOpenAsset(0)]
+    public static bool OnDoubleClickedAsset(int instanceID, int line)
+    {
+        //for load to room type
+        var roomNodeGraph = EditorUtility.InstanceIDToObject(instanceID) as RoomNodeGraphSO;
+
+        if (roomNodeGraph != null)
+        {
+            OpenEditorWindow();
+            currentRoomNodeGraph = roomNodeGraph;
+            return true;
+        }
+
+        return false;
     }
 
     #endregion
