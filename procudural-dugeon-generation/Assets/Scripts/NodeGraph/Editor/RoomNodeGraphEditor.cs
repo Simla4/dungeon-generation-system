@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.Callbacks;
+using UnityEditor.MPE;
 
 public class RoomNodeGraphEditor : EditorWindow
 {
@@ -9,6 +10,7 @@ public class RoomNodeGraphEditor : EditorWindow
     private GUIStyle roomNodeStyle;
 
     private static RoomNodeGraphSO currentRoomNodeGraph;
+    private RoomNodeTypeListSO roomNodeTypeList;
 
     private const float nodeWidht = 160f;
     private const float nodeHeight = 75;
@@ -42,17 +44,9 @@ public class RoomNodeGraphEditor : EditorWindow
         roomNodeStyle.normal.textColor = Color.white;
         roomNodeStyle.border = new RectOffset(nodeBorder, nodeBorder, nodeBorder, nodeBorder);
         roomNodeStyle.padding = new RectOffset(nodePadding, nodePadding, nodePadding, nodePadding);
-    }
-
-    private void OnGUI()
-    {
-        GUILayout.BeginArea(new Rect(new Vector2(100, 100), new Vector2(nodeWidht, nodeHeight)), roomNodeStyle);
-        EditorGUILayout.LabelField("node 1");
-        GUILayout.EndArea();
-
-        GUILayout.BeginArea(new Rect(new Vector2(200, 300), new Vector2(nodeWidht, nodeHeight)), roomNodeStyle);
-        EditorGUILayout.LabelField("node 2");
-        GUILayout.EndArea();
+        
+        //Load room node types
+        roomNodeTypeList = GameResources.Instance.roomNodeTypeList;
     }
     
     /// <summary>
@@ -72,6 +66,91 @@ public class RoomNodeGraphEditor : EditorWindow
         }
 
         return false;
+    }
+    
+        
+    /// <summary>
+    /// Draw Editor GUI
+    /// </summary>
+    private void OnGUI()
+    {
+        if (currentRoomNodeGraph != null)
+        {
+            ProcessEvent(Event.current);
+
+            DrawRoomNodes();
+        }
+    }
+
+    private void ProcessEvent(Event currentEvent)
+    {
+        ProcessRoomNodeGraphEvent(currentEvent);
+    }
+
+    private void ProcessRoomNodeGraphEvent(Event currentEvent)
+    {
+        switch (currentEvent.type)
+        {
+            case EventType.MouseDown:
+                ProccessMouseDownEvent(currentEvent);
+                break;
+                
+            default:
+                break;
+        }
+    }
+
+    /// <summary>
+    /// when right clicked mose down, show the context menu
+    /// </summary>
+    private void ProccessMouseDownEvent(Event currentEvent)
+    {
+        // did you right click?
+        if (currentEvent.button == 1)
+        {
+            ShowContextMenu(currentEvent.mousePosition);
+        }
+    }
+
+    private void ShowContextMenu(Vector2 mousePosition)
+    {
+        GenericMenu menu = new GenericMenu();
+        
+        menu.AddItem(new GUIContent("Create Room Node"), false, CreateRoomNode, mousePosition);
+        
+        //if you right click, show context menu
+        menu.ShowAsContext();
+    }
+
+    private void CreateRoomNode(object mousePosOject)
+    {
+        CreateRoomNode(mousePosOject, roomNodeTypeList.roomNodeTypeList.Find(x => x.isNone));
+    }
+
+    private void CreateRoomNode(object mousePosObject, RoomNodeTypeSO roomNodeType)
+    {
+        var mousePos = (Vector2)mousePosObject;
+
+        var roomNode = ScriptableObject.CreateInstance<RoomNodeSO>();
+        
+        currentRoomNodeGraph.roomNodeList.Add(roomNode);
+        roomNode.Initialize(new Rect(mousePos, new Vector2(nodeWidht, nodeHeight)), currentRoomNodeGraph, roomNodeType);
+        
+        AssetDatabase.AddObjectToAsset(roomNode, currentRoomNodeGraph);
+        AssetDatabase.SaveAssets();
+    }
+
+    /// <summary>
+    /// Draw room nodes in the graph window
+    /// </summary>
+    private void DrawRoomNodes()
+    {
+        foreach (var roomNode in currentRoomNodeGraph.roomNodeList)
+        {
+            roomNode.Draw(roomNodeStyle);
+        }
+
+        GUI.changed = true;
     }
 
     #endregion

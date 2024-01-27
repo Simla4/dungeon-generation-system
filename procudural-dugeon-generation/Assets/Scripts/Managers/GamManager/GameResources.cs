@@ -12,10 +12,11 @@ public class GameResources : MonoBehaviour
 
     private static GameResources instance;
 
-    private static GameResources Instance
+    public static GameResources Instance
     {
         get
         {
+            Debug.Log("Çalıştı");
             if(instance == null)
             {
                 instance = Resources.Load<GameResources>("GameResources");
