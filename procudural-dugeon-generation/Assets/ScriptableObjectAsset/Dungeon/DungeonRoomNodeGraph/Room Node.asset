@@ -17,9 +17,8 @@ MonoBehaviour:
   parentRoomList: []
   roomNodeTypeList: {fileID: 11400000, guid: 1c8fc2fa1a3644ecfa4fb286099565d1, type: 2}
   roomNodeGraph: {fileID: 11400000}
-  roomNodeType: {fileID: 11400000, guid: 4c17fff2e8aeb4cab879da8f1c3344c1, type: 2}
+  roomNodeType: {fileID: 11400000, guid: b1a08e56f3ead40d28ca37c8124209d2, type: 2}
   rect:
-    serializedVersion: 2
     x: 154
     y: 182
     width: 160
@@ -41,9 +40,8 @@ MonoBehaviour:
   parentRoomList: []
   roomNodeTypeList: {fileID: 11400000, guid: 1c8fc2fa1a3644ecfa4fb286099565d1, type: 2}
   roomNodeGraph: {fileID: 11400000}
-  roomNodeType: {fileID: 11400000, guid: 5a4b87079f681486db089d297b95a12f, type: 2}
+  roomNodeType: {fileID: 11400000, guid: b8ef1ef79487242c99cf3844e6383b26, type: 2}
   rect:
-    serializedVersion: 2
     x: 378
     y: 195
     width: 160
