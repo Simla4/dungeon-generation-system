@@ -54,14 +54,14 @@ public class RoomNodeSO : ScriptableObject
 
     private string[] GetRoomNodeTypeToDisplay()
     {
-        var roomArray = new string[roomNodeTypeList.roomNodeTypeList.Count];
-        var roomNodeTypeListCount = roomNodeTypeList.roomNodeTypeList.Count;
+        var localRoomNodeTypeList = roomNodeTypeList.roomNodeTypeList;
+        var roomArray = new string[localRoomNodeTypeList.Count];
 
-        for (int i = 0; i < roomNodeTypeListCount; i++)
+        for (int i = 0; i < localRoomNodeTypeList.Count; i++)
         {
-            if (roomNodeTypeList.roomNodeTypeList[i].disableInNodeGraphEditor)
+            if (localRoomNodeTypeList[i].disableInNodeGraphEditor)
             {
-                roomArray[i] = roomNodeTypeList.roomNodeTypeList[i].roomNodeTypeName;
+                roomArray[i] = localRoomNodeTypeList[i].roomNodeTypeName;
             }
         }
 

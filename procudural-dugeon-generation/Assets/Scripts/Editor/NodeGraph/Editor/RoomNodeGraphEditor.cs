@@ -11,6 +11,7 @@ public class RoomNodeGraphEditor : EditorWindow
 
     private static RoomNodeGraphSO currentRoomNodeGraph;
     private RoomNodeTypeListSO roomNodeTypeList;
+    private RoomNodeSO currentRoomNode = null;
 
     private const float nodeWidht = 160f;
     private const float nodeHeight = 75;
@@ -84,7 +85,24 @@ public class RoomNodeGraphEditor : EditorWindow
 
     private void ProcessEvent(Event currentEvent)
     {
+        currentRoomNode = IsMouseOverRoomNode(currentEvent);
+        
         ProcessRoomNodeGraphEvent(currentEvent);
+    }
+
+    private RoomNodeSO IsMouseOverRoomNode(Event currentEvent)
+    {
+        var currentRoomNodeGraphList = currentRoomNodeGraph.roomNodeList;
+        /* if current mouse position equals whatever node position  */
+        for (int i = currentRoomNodeGraphList.Count; i >= 0; i--)
+        {
+            if (currentRoomNodeGraphList[i].rect.Contains(currentEvent.mousePosition))
+            {
+                return currentRoomNodeGraphList[i];
+            }
+        }
+
+        return null;
     }
 
     private void ProcessRoomNodeGraphEvent(Event currentEvent)
