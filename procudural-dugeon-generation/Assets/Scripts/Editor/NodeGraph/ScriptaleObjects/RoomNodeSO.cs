@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 
 [CreateAssetMenu(fileName = "Room Node", menuName = "ScriptaleObjects/Dungeon Generation/Room Node")]
@@ -24,6 +25,8 @@ public class RoomNodeSO : ScriptableObject
 #if UNITY_EDITOR
 
     [HideInInspector] public Rect rect;
+    [HideInInspector] public bool isLeftClikDragging = false;
+    [HideInInspector] public bool isSelected = false;
 
     public void Initialize(Rect rect, RoomNodeGraphSO roomNodeGraph, RoomNodeTypeSO roomNodeType)
     {
@@ -66,6 +69,81 @@ public class RoomNodeSO : ScriptableObject
         }
 
         return roomArray;
+    }
+
+    public void ProcessEvent(Event currentEvent)
+    {
+        switch (currentEvent.type)
+        {
+            case EventType.MouseDown:
+                ProcessMouseDownEvent(currentEvent);
+                break;
+            
+            case EventType.MouseDrag:
+                ProcessMouseDragEvent(currentEvent);
+                break;
+            
+            case EventType.MouseUp:
+                ProcessMouseUpEvent(currentEvent);
+                break;
+            
+            default:
+                break;
+            
+        }
+    }
+
+    private void ProcessMouseDownEvent(Event currentEvent)
+    {
+        if (currentEvent.button == 0)
+        {
+            ProcessLeftClickDownEvent();
+        }
+    }
+
+    private void ProcessLeftClickDownEvent()
+    {
+        Selection.activeObject = this;
+
+        isSelected = !isSelected;
+    }
+    
+    private void ProcessMouseDragEvent(Event currentEvent)
+    {
+        if (currentEvent.button == 0)
+        {
+            ProcessLeftClickDragEvent(currentEvent);
+        }
+    }
+
+    private void ProcessLeftClickDragEvent(Event currenEvent)
+    {
+        isLeftClikDragging = true;
+        
+        DragNode(currenEvent.delta);
+        GUI.changed = true;
+    }
+
+    private void DragNode(Vector2 delta)
+    {
+        rect.position += delta;
+        EditorUtility.SetDirty(this);
+    }
+    
+    private void ProcessMouseUpEvent(Event currentEvent)
+    {
+        if (currentEvent.button == 0)
+        {
+            ProcessLeftClickUpEvent();
+        }
+    }
+
+    private void ProcessLeftClickUpEvent()
+    {
+        if (isLeftClikDragging)
+        {
+            isLeftClikDragging = false;
+        }
     }
 
 #endif

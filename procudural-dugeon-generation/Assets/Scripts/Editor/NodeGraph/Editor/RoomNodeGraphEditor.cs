@@ -85,16 +85,26 @@ public class RoomNodeGraphEditor : EditorWindow
 
     private void ProcessEvent(Event currentEvent)
     {
-        currentRoomNode = IsMouseOverRoomNode(currentEvent);
-        
-        ProcessRoomNodeGraphEvent(currentEvent);
+        if (currentRoomNode == null || currentRoomNode.isLeftClikDragging == false)
+        {
+            currentRoomNode = IsMouseOverRoomNode(currentEvent);
+        }
+
+        if (currentRoomNode == null)
+        {
+            ProcessRoomNodeGraphEvent(currentEvent);
+        }
+        else
+        {
+            currentRoomNode.ProcessEvent(currentEvent);
+        }
     }
 
     private RoomNodeSO IsMouseOverRoomNode(Event currentEvent)
     {
         var currentRoomNodeGraphList = currentRoomNodeGraph.roomNodeList;
         /* if current mouse position equals whatever node position  */
-        for (int i = currentRoomNodeGraphList.Count; i >= 0; i--)
+        for (int i = currentRoomNodeGraphList.Count - 1; i >= 0; i--)
         {
             if (currentRoomNodeGraphList[i].rect.Contains(currentEvent.mousePosition))
             {
