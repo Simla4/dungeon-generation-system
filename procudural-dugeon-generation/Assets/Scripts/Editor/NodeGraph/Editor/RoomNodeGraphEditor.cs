@@ -17,6 +17,7 @@ public class RoomNodeGraphEditor : EditorWindow
     private const float nodeHeight = 75;
     private const int nodeBorder = 12;
     private const int nodePadding = 25;
+    private const float lineWidth = 5f;
 
     #endregion
 
@@ -77,9 +78,24 @@ public class RoomNodeGraphEditor : EditorWindow
     {
         if (currentRoomNodeGraph != null)
         {
+            DrawDraggedLine();
+            
             ProcessEvent(Event.current);
 
             DrawRoomNodes();
+        }
+    }
+
+    private void DrawDraggedLine()
+    {
+        var node = currentRoomNodeGraph.roomNodeToDrawLineFrom;
+        var linePos = currentRoomNodeGraph.linePos;
+
+        
+        if (linePos != Vector2.zero)
+        {
+            Handles.DrawBezier(node.rect.center, linePos, node.rect.center, 
+                linePos, Color.white,null, lineWidth);
         }
     }
 
@@ -90,7 +106,7 @@ public class RoomNodeGraphEditor : EditorWindow
             currentRoomNode = IsMouseOverRoomNode(currentEvent);
         }
 
-        if (currentRoomNode == null)
+        if (currentRoomNode == null || currentRoomNodeGraph.roomNodeToDrawLineFrom != null)
         {
             ProcessRoomNodeGraphEvent(currentEvent);
         }
@@ -122,10 +138,35 @@ public class RoomNodeGraphEditor : EditorWindow
             case EventType.MouseDown:
                 ProccessMouseDownEvent(currentEvent);
                 break;
+            case EventType.MouseDrag:
+                ProccessMouseDragEvent(currentEvent);
+                break;
                 
             default:
                 break;
         }
+    }
+
+    private void ProccessMouseDragEvent(Event currentEvent)
+    {
+        if (currentEvent.button == 1)
+        {
+            ProcessRightClikDragEvent(currentEvent);
+        }
+    }
+
+    private void ProcessRightClikDragEvent(Event currentEvent)
+    {
+        if (currentRoomNodeGraph.linePos != null)
+        {
+            DragConnecionLine(currentEvent.delta);
+            GUI.changed = true;
+        }
+    }
+
+    private void DragConnecionLine(Vector2 delta)
+    {
+        currentRoomNodeGraph.linePos += delta;
     }
 
     /// <summary>
