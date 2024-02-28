@@ -12,8 +12,8 @@ public class RoomNodeSO : ScriptableObject
 {
     public string id;
 
-    [HideInInspector] public List<string> childRoomList = new List<string>();
-    [HideInInspector] public List<string> parentRoomList = new List<string>();
+     public List<string> childRoomList = new List<string>();
+     public List<string> parentRoomList = new List<string>();
     [HideInInspector] public RoomNodeTypeListSO roomNodeTypeList;
     [HideInInspector] public RoomNodeGraphSO roomNodeGraph;
     [HideInInspector] public Dictionary<string, RoomNodeTypeSO> roomNodeTypeDictionary;
@@ -37,6 +37,18 @@ public class RoomNodeSO : ScriptableObject
         this.roomNodeType = roomNodeType;
 
         roomNodeTypeList = GameResources.Instance.roomNodeTypeList;
+    }
+
+    public bool AddChildRoomNodeToRoomNoode(string id)
+    {
+        childRoomList.Add(id);
+        return true;
+    }
+
+    public bool AddParentRoomNodeToRoomNode(string id)
+    {
+        parentRoomList.Add(id);
+        return true;
     }
 
     public void Draw(GUIStyle nodeStyle)

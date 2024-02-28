@@ -108,7 +108,7 @@ public class RoomNodeGraphEditor : EditorWindow
 
         if (currentRoomNode == null || currentRoomNodeGraph.roomNodeToDrawLineFrom != null)
         {
-            ProcessRoomNodeGraphEvent(currentEvent);
+            ProcesRoomNodeGraphEvent(currentEvent);
         }
         else
         {
@@ -131,7 +131,7 @@ public class RoomNodeGraphEditor : EditorWindow
         return null;
     }
 
-    private void ProcessRoomNodeGraphEvent(Event currentEvent)
+    private void ProcesRoomNodeGraphEvent(Event currentEvent)
     {
         switch (currentEvent.type)
         {
@@ -140,6 +140,9 @@ public class RoomNodeGraphEditor : EditorWindow
                 break;
             case EventType.MouseDrag:
                 ProccessMouseDragEvent(currentEvent);
+                break;
+            case EventType.MouseUp:
+                ProceesMouseUpEvent(currentEvent);
                 break;
                 
             default:
@@ -181,6 +184,22 @@ public class RoomNodeGraphEditor : EditorWindow
         }
     }
 
+    private void ProceesMouseUpEvent(Event currentEvent)
+    {
+        var roomNodeToDrawLineFrom = currentRoomNodeGraph.roomNodeToDrawLineFrom;
+        if (currentEvent.button == 1 && roomNodeToDrawLineFrom != null)
+        {
+            var roomNode = IsMouseOverRoomNode(currentEvent);
+
+            if (roomNodeToDrawLineFrom.AddChildRoomNodeToRoomNoode(roomNode.id))
+            {
+                roomNodeToDrawLineFrom.AddParentRoomNodeToRoomNode(roomNode.id);
+            }
+            
+            ClearLineDrag();
+        }
+    }
+
     private void ShowContextMenu(Vector2 mousePosition)
     {
         GenericMenu menu = new GenericMenu();
@@ -207,6 +226,13 @@ public class RoomNodeGraphEditor : EditorWindow
         
         AssetDatabase.AddObjectToAsset(roomNode, currentRoomNodeGraph);
         AssetDatabase.SaveAssets();
+    }
+
+    private void ClearLineDrag()
+    {
+        currentRoomNodeGraph.roomNodeToDrawLineFrom = null;
+        currentRoomNodeGraph.linePos = Vector2.zero;
+        GUI.changed = true;
     }
 
     /// <summary>
