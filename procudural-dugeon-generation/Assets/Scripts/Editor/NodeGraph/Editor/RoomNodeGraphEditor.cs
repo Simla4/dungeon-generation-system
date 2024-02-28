@@ -191,11 +191,14 @@ public class RoomNodeGraphEditor : EditorWindow
         {
             var roomNode = IsMouseOverRoomNode(currentEvent);
 
-            if (roomNodeToDrawLineFrom.AddChildRoomNodeToRoomNoode(roomNode.id))
+            if (roomNode != null)
             {
-                roomNodeToDrawLineFrom.AddParentRoomNodeToRoomNode(roomNode.id);
+                if (roomNodeToDrawLineFrom.AddChildRoomNodeToRoomNoode(roomNode.id))
+                {
+                    roomNode.AddParentRoomNodeToRoomNode(roomNodeToDrawLineFrom.id);
+                }
             }
-            
+
             ClearLineDrag();
         }
     }
