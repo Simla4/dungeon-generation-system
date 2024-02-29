@@ -19,6 +19,7 @@ public class RoomNodeGraphEditor : EditorWindow
     private const int nodePadding = 25;
     
     private const float lineWidth = 5f;
+    private const float connectingLineArrowSize = 6f;
 
     #endregion
 
@@ -117,7 +118,25 @@ public class RoomNodeGraphEditor : EditorWindow
     {
         var startPos = parentRoomNode.rect.center;
         var endPos = childRoomNode.rect.center;
+
+        // calculate direction
+        var direction = endPos - startPos;
         
+        //calculate vector center
+        var center = (endPos + startPos) / 2f;
+
+        // calculate nolmalize perpendicular position from the center
+        var arrowTailPoint1 = center - new Vector2(-direction.y, direction.x).normalized * connectingLineArrowSize;
+        var arrowTailPoint2 = center + new Vector2(-direction.y, direction.x).normalized * connectingLineArrowSize;
+        
+        //calculate center offset position for arrow head
+        var arrowHeadPoint = center + direction.normalized * connectingLineArrowSize;
+        
+        //Draw Arrow
+        Handles.DrawBezier(arrowHeadPoint, arrowTailPoint1, arrowHeadPoint, arrowTailPoint1, Color.white, null, lineWidth);
+        Handles.DrawBezier(arrowHeadPoint, arrowTailPoint2, arrowHeadPoint,arrowTailPoint2, Color.white, null, lineWidth);
+        
+        //Draw line
         Handles.DrawBezier(startPos, endPos, startPos, endPos, Color.white, null, lineWidth);
 
         GUI.changed = true;
