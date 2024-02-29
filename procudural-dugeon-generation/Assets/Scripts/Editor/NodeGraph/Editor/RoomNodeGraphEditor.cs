@@ -17,6 +17,7 @@ public class RoomNodeGraphEditor : EditorWindow
     private const float nodeHeight = 75;
     private const int nodeBorder = 12;
     private const int nodePadding = 25;
+    
     private const float lineWidth = 5f;
 
     #endregion
@@ -81,9 +82,45 @@ public class RoomNodeGraphEditor : EditorWindow
             DrawDraggedLine();
             
             ProcessEvent(Event.current);
+            
+            DrawRoomNodeConnection();
 
             DrawRoomNodes();
         }
+        
+        if(GUI.changed)
+            Repaint();
+    }
+
+    private void DrawRoomNodeConnection()
+    {
+        var roomNodeDictionary = currentRoomNodeGraph.roomNodeDictionary;
+        
+        foreach (var roomNode in currentRoomNodeGraph.roomNodeList)
+        {
+            var childRoomNode = roomNode.childRoomList;
+            if (childRoomNode.Count > 0)
+            {
+                foreach (var ChildRoomNodeID in childRoomNode)
+                {
+                    if (roomNodeDictionary.ContainsKey(ChildRoomNodeID))
+                    {
+                        DrawConnectionLine(roomNode, roomNodeDictionary[ChildRoomNodeID]);
+                        GUI.changed = true;
+                    }
+                }
+            }
+        }
+    }
+
+    public void DrawConnectionLine (RoomNodeSO parentRoomNode, RoomNodeSO childRoomNode)
+    {
+        var startPos = parentRoomNode.rect.center;
+        var endPos = childRoomNode.rect.center;
+        
+        Handles.DrawBezier(startPos, endPos, startPos, endPos, Color.white, null, lineWidth);
+
+        GUI.changed = true;
     }
 
     private void DrawDraggedLine()
@@ -229,13 +266,8 @@ public class RoomNodeGraphEditor : EditorWindow
         
         AssetDatabase.AddObjectToAsset(roomNode, currentRoomNodeGraph);
         AssetDatabase.SaveAssets();
-    }
-
-    private void ClearLineDrag()
-    {
-        currentRoomNodeGraph.roomNodeToDrawLineFrom = null;
-        currentRoomNodeGraph.linePos = Vector2.zero;
-        GUI.changed = true;
+        
+        currentRoomNodeGraph.OnValidate();
     }
 
     /// <summary>
@@ -248,6 +280,15 @@ public class RoomNodeGraphEditor : EditorWindow
             roomNode.Draw(roomNodeStyle);
         }
 
+        GUI.changed = true;
+    }
+    /// <summary>
+    /// İf there is no connection, claear the line
+    /// </summary>
+    private void ClearLineDrag()
+    {
+        currentRoomNodeGraph.roomNodeToDrawLineFrom = null;
+        currentRoomNodeGraph.linePos = Vector2.zero;
         GUI.changed = true;
     }
 

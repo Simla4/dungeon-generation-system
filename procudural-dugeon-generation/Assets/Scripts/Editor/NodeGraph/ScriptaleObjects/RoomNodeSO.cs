@@ -10,10 +10,10 @@ using UnityEngine.Serialization;
 
 public class RoomNodeSO : ScriptableObject
 {
-    public string id;
+    [HideInInspector] public string id;
 
-     public List<string> childRoomList = new List<string>();
-     public List<string> parentRoomList = new List<string>();
+    [HideInInspector] public List<string> childRoomList = new List<string>();
+    [HideInInspector] public List<string> parentRoomList = new List<string>();
     [HideInInspector] public RoomNodeTypeListSO roomNodeTypeList;
     [HideInInspector] public RoomNodeGraphSO roomNodeGraph;
     [HideInInspector] public Dictionary<string, RoomNodeTypeSO> roomNodeTypeDictionary;
