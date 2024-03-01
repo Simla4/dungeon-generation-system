@@ -10,10 +10,10 @@ using UnityEngine.Serialization;
 
 public class RoomNodeSO : ScriptableObject
 {
-    [HideInInspector] public string id;
+     public string id;
 
-    [HideInInspector] public List<string> childRoomList = new List<string>();
-    [HideInInspector] public List<string> parentRoomList = new List<string>();
+     public List<string> childRoomList = new List<string>();
+     public List<string> parentRoomList = new List<string>();
     [HideInInspector] public RoomNodeTypeListSO roomNodeTypeList;
     [HideInInspector] public RoomNodeGraphSO roomNodeGraph;
     [HideInInspector] public Dictionary<string, RoomNodeTypeSO> roomNodeTypeDictionary;
@@ -56,11 +56,19 @@ public class RoomNodeSO : ScriptableObject
         GUILayout.BeginArea(rect, nodeStyle);
         
         EditorGUI.BeginChangeCheck();
-        var sellected = roomNodeTypeList.roomNodeTypeList.FindIndex(x => x == roomNodeType);
-        var sellection = EditorGUILayout.Popup("", sellected, GetRoomNodeTypeToDisplay());
-        
-        roomNodeType = roomNodeTypeList.roomNodeTypeList[sellection];
-        
+
+        if (parentRoomList.Count > 0 || roomNodeType.isEnterenceRoom)
+        {
+            EditorGUILayout.LabelField(roomNodeType.roomNodeTypeName);
+        }
+        else
+        {
+            var sellected = roomNodeTypeList.roomNodeTypeList.FindIndex(x => x == roomNodeType);
+            var sellection = EditorGUILayout.Popup("", sellected, GetRoomNodeTypeToDisplay());
+
+            roomNodeType = roomNodeTypeList.roomNodeTypeList[sellection];
+        }
+
         if(EditorGUI.EndChangeCheck())
             EditorUtility.SetDirty(this);
         
