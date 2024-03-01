@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.Callbacks;
@@ -28,8 +29,15 @@ public class RoomNodeGraphEditor : EditorWindow
 
     private void OnEnable()
     {
+        Selection.selectionChanged += InspectorSelectionChanged;
+        
         NodeStyle();
         SelectedRoomNodeStyle();
+    }
+
+    private void OnDisable()
+    {
+        Selection.selectionChanged -= InspectorSelectionChanged;
     }
 
     #endregion
@@ -329,6 +337,17 @@ public class RoomNodeGraphEditor : EditorWindow
         }
 
         GUI.changed = true;
+    }
+
+    private void InspectorSelectionChanged()
+    {
+        var roomNodeGraph = Selection.activeObject as RoomNodeGraphSO;
+
+        if (roomNodeGraph != null)
+        {
+            currentRoomNodeGraph = roomNodeGraph;
+            GUI.changed = true;
+        }
     }
 
     private void ClearAllSelecetedRoomNode()
