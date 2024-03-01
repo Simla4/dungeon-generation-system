@@ -8,6 +8,7 @@ public class RoomNodeGraphEditor : EditorWindow
     #region Vairables
 
     private GUIStyle roomNodeStyle;
+    private GUIStyle selectedRoomNodeStyle;
 
     private static RoomNodeGraphSO currentRoomNodeGraph;
     private RoomNodeTypeListSO roomNodeTypeList;
@@ -28,6 +29,7 @@ public class RoomNodeGraphEditor : EditorWindow
     private void OnEnable()
     {
         NodeStyle();
+        SelectedRoomNodeStyle();
     }
 
     #endregion
@@ -48,6 +50,19 @@ public class RoomNodeGraphEditor : EditorWindow
         roomNodeStyle.normal.textColor = Color.white;
         roomNodeStyle.border = new RectOffset(nodeBorder, nodeBorder, nodeBorder, nodeBorder);
         roomNodeStyle.padding = new RectOffset(nodePadding, nodePadding, nodePadding, nodePadding);
+        
+        //Load room node types
+        roomNodeTypeList = GameResources.Instance.roomNodeTypeList;
+    }
+
+    private void SelectedRoomNodeStyle()
+    {
+        selectedRoomNodeStyle = new GUIStyle();
+
+        selectedRoomNodeStyle.normal.background = EditorGUIUtility.Load("node2 on") as Texture2D;
+        selectedRoomNodeStyle.normal.textColor = Color.white;
+        selectedRoomNodeStyle.border = new RectOffset(nodeBorder, nodeBorder, nodeBorder, nodeBorder);
+        selectedRoomNodeStyle.padding = new RectOffset(nodePadding, nodePadding, nodePadding, nodePadding);
         
         //Load room node types
         roomNodeTypeList = GameResources.Instance.roomNodeTypeList;
@@ -223,10 +238,6 @@ public class RoomNodeGraphEditor : EditorWindow
         }
     }
 
-    private void DragConnecionLine(Vector2 delta)
-    {
-        currentRoomNodeGraph.linePos += delta;
-    }
 
     /// <summary>
     /// when right clicked mose down, show the context menu
@@ -237,6 +248,11 @@ public class RoomNodeGraphEditor : EditorWindow
         if (currentEvent.button == 1)
         {
             ShowContextMenu(currentEvent.mousePosition);
+        }
+        else if(currentEvent.button == 0)
+        {
+             ClearLineDrag();
+             ClearAllSelecetedRoomNode();
         }
     }
 
@@ -257,6 +273,12 @@ public class RoomNodeGraphEditor : EditorWindow
 
             ClearLineDrag();
         }
+    }
+    
+    
+    private void DragConnecionLine(Vector2 delta)
+    {
+        currentRoomNodeGraph.linePos += delta;
     }
 
     private void ShowContextMenu(Vector2 mousePosition)
@@ -296,11 +318,31 @@ public class RoomNodeGraphEditor : EditorWindow
     {
         foreach (var roomNode in currentRoomNodeGraph.roomNodeList)
         {
-            roomNode.Draw(roomNodeStyle);
+            if (roomNode.isSelected)
+            {
+                roomNode.Draw(selectedRoomNodeStyle);
+            }
+            else
+            {
+                roomNode.Draw(roomNodeStyle);
+            }
         }
 
         GUI.changed = true;
     }
+
+    private void ClearAllSelecetedRoomNode()
+    {
+        foreach (var roomNode in currentRoomNodeGraph.roomNodeList)
+        {
+            if (roomNode.isSelected)
+            {
+                roomNode.isSelected = false;
+                GUI.changed = true;
+            }
+        }
+    }
+    
     /// <summary>
     /// İf there is no connection, claear the line
     /// </summary>
