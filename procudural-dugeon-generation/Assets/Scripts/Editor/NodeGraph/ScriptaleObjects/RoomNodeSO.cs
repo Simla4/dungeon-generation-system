@@ -11,7 +11,7 @@ using UnityEngine.Serialization;
 public class RoomNodeSO : ScriptableObject
 {
      public string id;
-
+    
      public List<string> childRoomList = new List<string>();
      public List<string> parentRoomList = new List<string>();
     [HideInInspector] public RoomNodeTypeListSO roomNodeTypeList;
@@ -39,15 +39,46 @@ public class RoomNodeSO : ScriptableObject
         roomNodeTypeList = GameResources.Instance.roomNodeTypeList;
     }
 
-    public bool AddChildRoomNodeToRoomNoode(string id)
+    public bool AddChildRoomNodeToRoomNoode(string childID)
     {
-        childRoomList.Add(id);
+        if (IsChildRoomValid(childID))
+        {
+            childRoomList.Add(childID);
+            return true;
+        }
+
+        return false;
+    }
+
+    public bool IsChildRoomValid(string childID)
+    {
+        if (roomNodeGraph.GetRoomNode(childID).roomNodeType.isNone)
+            return false;
+        if (id == childID)
+            return false;
+        if (childRoomList.Contains(childID))
+            return false;
+        if (parentRoomList.Contains(childID))
+            return false;
+        
         return true;
     }
 
-    public bool AddParentRoomNodeToRoomNode(string id)
+    public bool AddParentRoomNodeToRoomNode(string parentID)
     {
-        parentRoomList.Add(id);
+        if(IsParentRoomValid(parentID))
+        {
+            parentRoomList.Add(parentID);
+            return true;
+        }
+
+        return false;
+    }
+
+    public bool IsParentRoomValid(string parentID)
+    {
+        if (parentRoomList.Contains(parentID))
+            return false;
         return true;
     }
 
