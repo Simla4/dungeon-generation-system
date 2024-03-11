@@ -13,15 +13,16 @@ MonoBehaviour:
   m_Name: Room Node
   m_EditorClassIdentifier: 
   id: 16deeacd-866d-464c-ae26-7a8bd4464603
-  childRoomList: []
+  childRoomList:
+  - 46e087c6-4dd7-4343-9075-23608bee703a
   parentRoomList: []
   roomNodeTypeList: {fileID: 11400000, guid: 1c8fc2fa1a3644ecfa4fb286099565d1, type: 2}
   roomNodeGraph: {fileID: 11400000}
-  roomNodeType: {fileID: 11400000, guid: 686a4012474e74d2aa22725671901e44, type: 2}
+  roomNodeType: {fileID: 11400000, guid: b1a08e56f3ead40d28ca37c8124209d2, type: 2}
   rect:
     serializedVersion: 2
-    x: 250
-    y: 118
+    x: 308
+    y: 116
     width: 160
     height: 75
   isLeftClikDragging: 0
@@ -42,8 +43,35 @@ MonoBehaviour:
   roomNodeList:
   - {fileID: -3728245285518033045}
   - {fileID: 4557782315630612969}
+  - {fileID: 3857925284674781742}
   roomNodeToDrawLineFrom: {fileID: 0}
   linePos: {x: 0, y: 0}
+--- !u!114 &3857925284674781742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f097971ada3741c6b3692317acb0f22, type: 3}
+  m_Name: Room Node
+  m_EditorClassIdentifier: 
+  id: db3ff5d0-4740-4d92-a962-0a0dbcb8ec88
+  childRoomList: []
+  parentRoomList: []
+  roomNodeTypeList: {fileID: 11400000, guid: 1c8fc2fa1a3644ecfa4fb286099565d1, type: 2}
+  roomNodeGraph: {fileID: 11400000}
+  roomNodeType: {fileID: 11400000, guid: 67ed91c485d8d49748b6f56054ca0bfd, type: 2}
+  rect:
+    serializedVersion: 2
+    x: 698
+    y: 246
+    width: 160
+    height: 75
+  isLeftClikDragging: 0
+  isSelected: 0
 --- !u!114 &4557782315630612969
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58,14 +86,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 46e087c6-4dd7-4343-9075-23608bee703a
   childRoomList: []
-  parentRoomList: []
+  parentRoomList:
+  - 16deeacd-866d-464c-ae26-7a8bd4464603
   roomNodeTypeList: {fileID: 11400000, guid: 1c8fc2fa1a3644ecfa4fb286099565d1, type: 2}
   roomNodeGraph: {fileID: 11400000}
-  roomNodeType: {fileID: 11400000, guid: 67ed91c485d8d49748b6f56054ca0bfd, type: 2}
+  roomNodeType: {fileID: 11400000, guid: 4c17fff2e8aeb4cab879da8f1c3344c1, type: 2}
   rect:
     serializedVersion: 2
-    x: 539
-    y: 140
+    x: 615
+    y: 116
     width: 160
     height: 75
   isLeftClikDragging: 0

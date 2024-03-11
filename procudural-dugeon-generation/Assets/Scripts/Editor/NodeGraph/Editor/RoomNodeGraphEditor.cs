@@ -296,6 +296,9 @@ public class RoomNodeGraphEditor : EditorWindow
         menu.AddItem(new GUIContent("Create Room Node"), false, CreateRoomNode, mousePosition);
         menu.AddSeparator("");
         menu.AddItem(new GUIContent("Select All Room Nodes"), false, SelectAllRoomNodes);
+        menu.AddSeparator("");
+        menu.AddItem(new GUIContent("Delete Selected Room Node Links"), false, DeleteSelectedRoomNodeLinks);
+        
         
         //if you right click, show context menu
         menu.ShowAsContext();
@@ -360,6 +363,28 @@ public class RoomNodeGraphEditor : EditorWindow
         }
 
         GUI.changed = true;
+    }
+
+    private void DeleteSelectedRoomNodeLinks()
+    {
+        foreach (var roomNode in currentRoomNodeGraph.roomNodeList)
+        {
+            var childRoomList = roomNode.childRoomList;
+            if (roomNode.isSelected && childRoomList.Count > 0)
+            {
+                for (int i = childRoomList.Count - 1; i >= 0; i--)
+                {
+                    var childRoomNode = currentRoomNodeGraph.GetRoomNode(childRoomList[i]);
+
+                    if (childRoomNode != null && childRoomNode.isSelected)
+                    {
+                        roomNode.RemoveChildRoomNodeIDFromNode(childRoomNode.id);
+                        childRoomNode.RemoveParentRoomNodeIDFromNode(roomNode.id);
+                    }
+                }
+            }
+            
+        }
     }
 
     private void ClearAllSelecetedRoomNode()
