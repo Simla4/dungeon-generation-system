@@ -16,7 +16,6 @@ public class GameResources : MonoBehaviour
     {
         get
         {
-            Debug.Log("Çalıştı");
             if(instance == null)
             {
                 instance = Resources.Load<GameResources>("GameResources");
