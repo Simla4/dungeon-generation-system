@@ -19,7 +19,6 @@ public class GameResources : MonoBehaviour
             if(instance == null)
             {
                 instance = Resources.Load<GameResources>("GameResources");
-
             }
 
             return instance;

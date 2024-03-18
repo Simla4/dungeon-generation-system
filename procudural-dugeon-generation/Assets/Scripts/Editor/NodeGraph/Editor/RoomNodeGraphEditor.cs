@@ -139,12 +139,12 @@ public class RoomNodeGraphEditor : EditorWindow
 
         for (int i = 0; i < verticalLineCount; i++)
         {
-            Handles.DrawLine(new Vector3(gridSize * i, -gridSize, 0), new Vector3(gridSize * i, position.height + gridSize, 0) + gridOffet);   
+            Handles.DrawLine(new Vector3(gridSize * i, -gridSize, 0) + gridOffet, new Vector3(gridSize * i, position.height + gridSize, 0) + gridOffet);   
         }
 
         for (int j = 0; j < horizontalLineCount; j++)
         {
-            Handles.DrawLine(new Vector3( -gridSize, gridSize * j, 0), new Vector3(position.width + gridSize, gridSize * j, 0) + gridOffet);
+            Handles.DrawLine(new Vector3( -gridSize, gridSize * j, 0) + gridOffet, new Vector3(position.width + gridSize, gridSize * j, 0) + gridOffet);
         }
         
         Handles.color = Color.white;
